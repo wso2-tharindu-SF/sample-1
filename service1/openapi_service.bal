@@ -16,6 +16,9 @@ service / on ep0 {
         service2:Record[] records = catalog.data;
         int recordCount = records.length();
         log:printInfo("handled average request", recordCount = recordCount);
+        if recordCount == 0 {
+            return error("service2 catalog is empty; cannot compute an average");
+        }
         int total = 0;
         foreach service2:Record item in records {
             total += item.score;
