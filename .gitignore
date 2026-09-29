@@ -9,3 +9,8 @@ replay_pid*.log
 /service2/target/
 /service2/generated/
 /service2/Config.toml
+
+# service1 (Ballerina) build output
+/service1/target/
+/service1/generated/
+/service1/Config.toml
