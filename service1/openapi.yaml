@@ -1,0 +1,28 @@
+openapi: 3.0.3
+info:
+  title: Service1 API
+  version: 0.1.0
+  description: Computes the average score of Service2's current catalog.
+servers:
+  - url: /
+paths:
+  /average:
+    get:
+      operationId: getAverageScore
+      summary: The whole-number average score of Service2's current catalog
+      responses:
+        '200':
+          description: The computed average
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AverageScore'
+components:
+  schemas:
+    AverageScore:
+      type: object
+      required: [average]
+      properties:
+        average:
+          type: integer
+          description: Sum of every record's score divided by the record count, remainder discarded
