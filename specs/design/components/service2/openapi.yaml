@@ -1,0 +1,88 @@
+openapi: 3.0.3
+info:
+  title: Service2 API
+  version: 0.1.0
+  description: Serves a fixed catalog of scored records and an internal operations endpoint to switch its mode.
+servers:
+  - url: /
+paths:
+  /catalog:
+    get:
+      operationId: getCatalog
+      summary: The current catalog of scored records
+      responses:
+        '200':
+          description: The catalog matching the current mode
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+  /operations/mode:
+    put:
+      operationId: setCatalogMode
+      summary: Switch between full and empty catalog mode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModeChange'
+      responses:
+        '200':
+          description: Mode switched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+        '400':
+          description: Invalid mode value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Record:
+      type: object
+      required: [id, name, score]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        score:
+          type: integer
+    Catalog:
+      type: object
+      required: [mode, data]
+      properties:
+        mode:
+          type: string
+          enum: [full, empty]
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Record'
+    ModeChange:
+      type: object
+      required: [mode]
+      properties:
+        mode:
+          type: string
+          enum: [full, empty]
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: integer
+          description: HTTP or application error code
+        message:
+          type: string
+          description: short human-readable label
+        description:
+          type: string
+          description: detailed explanation
+        moreInfo:
+          type: string
+          description: URI to documentation
